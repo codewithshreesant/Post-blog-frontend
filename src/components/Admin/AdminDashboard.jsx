@@ -45,6 +45,13 @@ const AdminDashboard = () => {
                             Comments 
                         </button>
                     </Link>
+                    <Link to='/admin/dashboard/settings'>
+                        <button
+                            className={`block py-2 px-4 w-full text-left hover:bg-gray-700 `}
+                        >
+                            settings
+                        </button>
+                    </Link>
                 </nav>
             </aside>
 

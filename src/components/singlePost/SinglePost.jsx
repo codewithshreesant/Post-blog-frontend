@@ -1,6 +1,6 @@
 
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useGetSinglePostQuery } from '../../features/blogs/blogApi';
 import Comment from '../comments/Comment';
 import { useSelector } from 'react-redux';
@@ -9,9 +9,11 @@ import RecommendPost from '../Recommended_Blogs/RecommendPost';
 function SinglePost() {
     const { id } = useParams();
     console.log("single post id ", id)
+    const navigate = useNavigate();
     const user = useSelector(state => state.user);
     //   console.log("comment user ",user.user);
     const actualUser = user?.user;
+    
     const { data, error, isLoading } = useGetSinglePostQuery(id);
     const singlePost = data?.data.singlePost;
     const comments = data?.data.comments;
@@ -33,18 +35,20 @@ function SinglePost() {
                 <div className='flex flex-col gap-[1.5rem] mt-[3rem]'>
                     <h1 className='text-[2rem]'>Comments</h1>
                     <div className='w-[60vw] flex flex-col gap-[1.5rem]'>
-                        {
-                            comments && comments.map((comment, index) => {
-                                return (
-                                    <div key={index} className="bg-white p-4 rounded-lg shadow-md mb-4">
-                                        <h1 className="font-bold text-xl text-blue-500">{actualUser.username}</h1>
-                                        <h2 className="text-gray-700 mt-2">{comment.text}</h2>
-                                        <span className="text-gray-500 text-sm">{new Date(comment.createdAt).toLocaleString()}</span>
-                                    </div>
-                                );
-                            })
-                        }
-
+                       {actualUser &&  <div>
+                           {
+                                comments && comments.map((comment, index) => {
+                                    return (
+                                        <div key={index} className="bg-white p-4 rounded-lg shadow-md mb-4">
+                                            <h1 className="font-bold text-xl text-blue-500">{actualUser ? actualUser.username : ''}</h1>
+                                            <h2 className="text-gray-700 mt-2">{comment.text}</h2>
+                                            <span className="text-gray-500 text-sm">{new Date(comment.createdAt).toLocaleString()}</span>
+                                        </div>
+                                    );
+                                })
+                            }
+                       </div>
+                    }
                     </div>
                 </div>
                 <Comment postId={data && singlePost._id} />
@@ -54,5 +58,6 @@ function SinglePost() {
         </div>
     )
 }
+
 
 export default SinglePost

@@ -1,6 +1,5 @@
-
 import React from 'react'
-import { Link } from 'react-router-dom'  
+import { Link } from 'react-router-dom'
 import Button from '../Button/Button'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginUserMutation, useLogoutUserMutation } from '../../features/users/user';
@@ -8,35 +7,34 @@ import { removeUser } from '../../slice/user/UserSlice';
 
 const sections = [
     {
-        name:'Home',
-        path:'/'
+        name: 'Home',
+        path: '/'
     },
     {
-        name:'About',
-        path:'/about'
+        name: 'About',
+        path: '/about'
     },
     {
-        name:'Blogs',
-        path:'/blogs'
+        name: 'Blogs',
+        path: '/blogs'
     },
     {
-        name:'Contact',
-        path:'/contact'
+        name: 'Contact',
+        path: '/contact'
     },
 ]
 
 function Navbar() {
-    const [ logoutUser,  { error, isLoading }] = useLogoutUserMutation();
+    const [logoutUser, { error, isLoading }] = useLogoutUserMutation();
     const dispatch = useDispatch();
-    const user = useSelector(state=>state.user);
+    const user = useSelector(state => state.user);
     const isUser = user?.user;
     console.log("user ", user)
     const handleLogout = async () => {
         try {
             const response = await logoutUser();
             console.log("logout response ", response);
-            if(response?.data.statusCode === 200)
-            {
+            if (response?.data.statusCode === 200) {
                 alert(" User Logout Successfully ");
                 dispatch(removeUser());
             }
@@ -44,39 +42,41 @@ function Navbar() {
             console.log("Error while logour ", error.message);
         }
     }
-    
-  return (
-    <nav className='h-[10vh] flex justify-around items-center'>
-        <div>
-            <h1>Shrisant_Academy</h1>
-        </div>
-        <ul className='flex gap-[2rem]'>
-            {
-                sections && sections.map((element, index)=>{
-                    return <Link to={element.path}>
-                        <li className='list-none'>{element.name}</li>
-                    </Link>
-                })
-            }
 
-            { !isUser &&
-            <div className='h-[4vh] flex gap-[0.8rem] items-center'>
-                <Button name='Login' path='/login'/>
-                <Button name='Signup' path='/signup' />
+    return (
+        <nav className='h-[10vh] flex justify-around items-center'>
+            <div>
+                <h1 className="text-3xl font-extrabold text-indigo-600 tracking-tight uppercase">
+                    <span className="text-gray-900">Shrisant</span>_Academy
+                </h1>
             </div>
-            }
-            { isUser &&
-                <button
-                onClick={handleLogout}
-                className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-              >
-                Logout
-              </button>
-            }
-           
-        </ul>
-    </nav>
-  )
+            <ul className='flex gap-[2rem]'>
+                {
+                    sections && sections.map((element, index) => {
+                        return <Link to={element.path}>
+                            <li className='list-none font-bold text-purple-800'>{element.name}</li>
+                        </Link>
+                    })
+                }
+
+                {!isUser &&
+                    <div className='h-[4vh] flex gap-[0.8rem] items-center'>
+                        <Button name='Login' path='/login' />
+                        <Button name='Signup' path='/signup' />
+                    </div>
+                }
+                {isUser &&
+                    <button
+                        onClick={handleLogout}
+                        className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                    >
+                        Logout
+                    </button>
+                }
+
+            </ul>
+        </nav>
+    )
 }
 
 export default Navbar

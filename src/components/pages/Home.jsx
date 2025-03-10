@@ -2,8 +2,40 @@
 import React from 'react'
 import Button from '../Button/Button'
 import Recommended from '../Recommended_Blogs/Recommended'
+import BlogSlider from '../slider/BlogSlider'
+import LogoGallery from '../logo_gallery/LogoGallery';
 
 function Home() {
+    const slides = [
+        {
+          image: 'https://images.pexels.com/photos/6424590/pexels-photo-6424590.jpeg?auto=compress&cs=tinysrgb&w=600', // Replace with your image path
+          title: 'Mastering Python: A Beginner’s Guide',
+          description: 'Learn the fundamentals of Python programming and kickstart your coding journey.',
+          link: '/blog/python-beginners-guide',
+          alt: 'Python Beginners Guide',
+        },
+        {
+          image: 'https://images.pexels.com/photos/360591/pexels-photo-360591.jpeg?auto=compress&cs=tinysrgb&w=600', // Replace with your image path
+          title: 'JavaScript: Beyond the Basics',
+          description: 'Explore advanced JavaScript concepts and techniques to enhance your web development skills.',
+          link: '/blog/javascript-advanced',
+          alt: 'JavaScript Advanced',
+        },
+        {
+          image: 'https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=600', // Replace with your image path
+          title: 'C++: From Fundamentals to Applications',
+          description: 'Discover the power of C++ and build robust applications with this versatile programming language.',
+          link: '/blog/cpp-fundamentals',
+          alt: 'C++ Fundamentals',
+        },
+        {
+          image: 'https://images.pexels.com/photos/11035384/pexels-photo-11035384.jpeg?auto=compress&cs=tinysrgb&w=600', // Replace with your image path
+          title: 'Rust: Safe and Concurrent Systems Programming',
+          description: 'Dive into Rust programming and learn how to build reliable and efficient systems.',
+          link: '/blog/rust-programming',
+          alt: 'Rust Programming',
+        },
+      ];
     return (
         <div>
             <div className='h-[60vh] flex justify-around items-center'>
@@ -24,6 +56,8 @@ function Home() {
                 </div>
             </div>
             <Recommended />
+            <BlogSlider slides={slides} />
+            <LogoGallery />
         </div>
     )
 }

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAdminLoginMutation } from '../../features/users/user';
 import { useNavigate } from 'react-router-dom';
 
 function AdminLogin() {
-  const [ adminLogin, { isLoading } ] = useAdminLoginMutation();
+  const [adminLogin, { isLoading }] = useAdminLoginMutation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -12,26 +12,53 @@ function AdminLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(" username ", username);
-    console.log(" password ", password);
-   try {
-     const response = await adminLogin({
-       username,
-       password 
-     })
- 
-     console.log(" login response ", response );
- 
-     if(response?.data.statusCode === 200)
-     {
-       alert(" Admin Login Successfully ")
-       navigate('/admin/dashboard')
-     }
-   } catch (error) {
-      console.log(" Error occured while Admin Login ", error.message);
-   }
+    setError('');
+    try {
+      const response = await adminLogin({
+        username,
+        password,
+      });
+      console.log("admin login response ", response)
+      if (response?.error) {
+        if (response.error.data && response.error.data.error) {
+          setError(response.error.data.error);
+        } else {
+          setError('An unexpected error occurred.');
+        }
+      } else if (response?.data?.statusCode === 200) {
+        alert('Admin Login Successfully');
+        // Store admin data in localStorage
+        localStorage.setItem('adminData', JSON.stringify(response.data.data));
 
+        // Set expiration time (1 hour from now)
+        const expirationTime = Date.now() + 60 * 60 * 1000; // 1 hour in milliseconds
+        localStorage.setItem('adminDataExpiration', expirationTime.toString());
+
+        navigate('/admin/dashboard');
+      } else {
+        setError('Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      console.error('Error occurred during Admin Login:', err);
+      setError('An unexpected error occurred. Please try again later.');
+    }
   };
+
+  useEffect(() => {
+    const checkExpiration = () => {
+      const expirationTime = localStorage.getItem('adminDataExpiration');
+      if (expirationTime && Date.now() > parseInt(expirationTime)) {
+        localStorage.removeItem('adminData');
+        localStorage.removeItem('adminDataExpiration');
+      }
+    };
+
+    checkExpiration(); // Check on component mount
+
+    const intervalId = setInterval(checkExpiration, 60000); // Check every minute
+
+    return () => clearInterval(intervalId); // Cleanup interval on unmount
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -68,6 +95,11 @@ function AdminLogin() {
               className="w-full px-3 py-2 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             />
           </div>
+          {error && (
+            <div className="mb-4 text-red-500 text-sm">
+              {error}
+            </div>
+          )}
           <div className="flex items-center justify-center">
             <button
               type="submit"
@@ -81,6 +113,5 @@ function AdminLogin() {
     </div>
   );
 }
-
 
 export default AdminLogin;

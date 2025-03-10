@@ -15,7 +15,7 @@ const userApi = createApi({
                 body:user 
             })
         }),
-        getUsers : builder.mutation({
+        getUsers : builder.query({
             query : () => ({
                 url:'/users',
                 method:'GET'
@@ -40,11 +40,20 @@ const userApi = createApi({
                 method:'POST',
                 body:admin 
             })
+        }),
+
+        updateAdmin : builder.mutation({
+            query : ({id, admin}) => ({
+                url:`/update/${id}`,
+                method:'PUT',
+                body:admin
+            })
         })
+
     })
 })
 
-export const { useCreateUserMutation, useGetUsersQuery, useLoginUserMutation, useLogoutUserMutation, useAdminLoginMutation } = userApi;
+export const { useCreateUserMutation, useGetUsersQuery, useLoginUserMutation, useLogoutUserMutation, useAdminLoginMutation, useUpdateAdminMutation } = userApi;
 
 
 export default userApi;
