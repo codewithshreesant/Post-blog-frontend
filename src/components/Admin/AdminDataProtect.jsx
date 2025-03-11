@@ -13,7 +13,7 @@ function AdminDataProtect({ children }) {
         if (actualAdmin) {
             // User is admin, do nothing here. The children will be rendered.
         } else {
-            navigate('/login');
+            navigate('/admin');
         }
     }, [actualAdmin, navigate]); // Add user and navigate as dependencies
     if (actualAdmin) {

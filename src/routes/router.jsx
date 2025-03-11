@@ -20,6 +20,9 @@ import CreateBlog from "../components/Admin/CreateBlog";
 import AdminSettings from "../components/Admin/AdminSettings";
 // import AdminDataProtect from "../components/Admin/AdminDataProtect";
 import AdminProtect from "../components/Admin/AdminProtect";
+import BlogUpdate from "../components/Admin/BlogUpdate";
+import CreateContact from "../components/Admin/CreateContact";
+import ContactUpdate from "../components/Admin/ContactUpdate";
 
 export const router = createBrowserRouter([
     {
@@ -104,6 +107,18 @@ export const router = createBrowserRouter([
                     <AdminSettings />
                 </AdminDataProtect>
 
+            },
+            {
+                path:'update/:id',
+                element:<BlogUpdate/>
+            },
+            {
+                path:'create-contact',
+                element:<CreateContact />
+            },
+            {
+                path:'update-contact/:id',
+                element:<ContactUpdate />
             }
         ]
     }

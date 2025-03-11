@@ -1,10 +1,15 @@
+
+
 import React from 'react'
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom'
-import Button from '../Button/Button'
+// import Button from '../Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginUserMutation, useLogoutUserMutation } from '../../features/users/user';
 import { removeUser } from '../../slice/user/UserSlice';
-import MenuDrawar from '../drawer/MenuDrawar';
+import { FiMenu } from "react-icons/fi";
+
 
 const sections = [
     {
@@ -25,7 +30,7 @@ const sections = [
     },
 ]
 
-function Navbar() {
+function MenuDrawer() {
     const [logoutUser, { error, isLoading }] = useLogoutUserMutation();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
@@ -43,22 +48,19 @@ function Navbar() {
             console.log("Error while logour ", error.message);
         }
     }
+    const [open, setOpen] = React.useState(false);
+
+    const toggleDrawer = (newOpen) => () => {
+        setOpen(newOpen);
+    };
 
     return (
-        <nav className='h-[10vh] flex justify-around items-center'>
-            <MenuDrawar />
-            <div>
-                {/* <h1 className="text-3xl font-extrabold text-indigo-600 tracking-tight uppercase">
-                    <span className="text-gray-900">Shrisant</span>_Academy
-                </h1> */}
-                <img src="/images/shrisant_academy/shrisant_academy.png" alt="not found" style={{
-                    width: '130px', // Adjust as needed
-                    height: 'auto', // Maintain aspect ratio
-
-                }} />
-            </div>
-            <div className='md:block lg:block hidden'>
-                <ul className='flex gap-[2rem]'>
+        <div className='md:hidden lg:hidden block'>
+            <Button onClick={toggleDrawer(true)}>
+            <FiMenu style={{ fontSize: '2em' }} />
+            </Button>
+            <Drawer open={open} onClose={toggleDrawer(false)}>
+                <ul className='flex flex-col gap-[2rem] w-[30vw] items-center my-[2rem]'>
                     {
                         sections && sections.map((element, index) => {
                             return <Link to={element.path}>
@@ -66,24 +68,33 @@ function Navbar() {
                             </Link>
                         })
                     }
+
                     {!isUser &&
                         <div className='h-[4vh] flex gap-[0.8rem] items-center'>
-                            <Button name='Login' path='/login' />
-                            <Button name='Signup' path='/signup' />
+                            {/* <Button name='Login' path='/login' />
+                            <Button name='Signup' path='/signup' /> */}
+                            <Button className="px-6 py-2 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-purple-600 hover:via-purple-500 hover:to-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 ease-in-out">
+                                <Link to='/login'>Login</Link>
+                            </Button>
+                            <Button className="px-6 py-2 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-purple-600 hover:via-purple-500 hover:to-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 ease-in-out">
+                                <Link to='/signup'>Signup</Link>
+                            </Button>
                         </div>
                     }
+
                     {isUser &&
-                        <button
+                        <button 
                             onClick={handleLogout}
                             className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
                         >
                             Logout
                         </button>
                     }
+
                 </ul>
-            </div>
-        </nav>
+            </Drawer>
+        </div>
     )
 }
 
-export default Navbar
+export default MenuDrawer   

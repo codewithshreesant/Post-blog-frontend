@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { useGetUsersQuery } from '../../features/users/user';
+import { useGetPostsQuery } from '../../features/blogs/blogApi';
+import { useGetAllContactsQuery } from '../../features/contacts/contactApi';
 const AdminDashboard = () => {
+    const {data, error } = useGetUsersQuery();
+
+    const { data:blogs } = useGetPostsQuery();
+
+    const { data:contacts } = useGetAllContactsQuery();
+
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -62,15 +71,15 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="bg-white p-6 rounded shadow">
                         <h2 className="text-lg font-semibold mb-2">Total Users</h2>
-                        <p className="text-4xl">1,234</p>
+                        {data && <p className="text-4xl">{(data?.data).length}</p>}
                     </div>
                     <div className="bg-white p-6 rounded shadow">
                         <h2 className="text-lg font-semibold mb-2">Total Blogs</h2>
-                        <p className="text-4xl">567</p>
+                        {blogs && <p className="text-4xl">{(blogs?.data).length}</p>}
                     </div>
                     <div className="bg-white p-6 rounded shadow">
                         <h2 className="text-lg font-semibold mb-2">Total Contacts</h2>
-                        <p className="text-4xl">$10,000</p>
+                        {contacts && <p className="text-4xl">{(contacts?.data).length}</p>}
                     </div>
                 </div>
 

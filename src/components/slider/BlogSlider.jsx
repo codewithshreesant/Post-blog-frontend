@@ -23,7 +23,7 @@ const BlogSlider = ({ slides }) => {
     setCurrentIndex((prevIndex) =>
       prevIndex === slides.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  };       
 
   return (
     <div className="relative w-full overflow-hidden rounded-lg shadow-lg my-20">

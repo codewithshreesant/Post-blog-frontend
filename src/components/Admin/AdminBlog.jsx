@@ -68,15 +68,8 @@ function AdminBlog() {
                   <div className="flex space-x-2">
                     <button
                       className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
-                      onClick={() => {
-                        const updatedTitle = prompt('Enter updated title:', blog.title);
-                        const updatedDescription = prompt('Enter updated description:', blog.description);
-                        if (updatedTitle && updatedDescription) {
-                          handleUpdate(blog._id, { title: updatedTitle, description: updatedDescription });
-                        }
-                      }}
                     >
-                      Update
+                      <Link to={`/admin/dashboard/update/${blog._id}`}>Update</Link>
                     </button>
                     <button
                       className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded"

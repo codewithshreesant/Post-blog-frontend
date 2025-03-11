@@ -3,20 +3,22 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useCreateCommentMutation } from '../../features/comments/commentApi';
 
-function Comment({postId}) {
+function Comment({postId, refetch}) {
 
   const [commentText, setCommentText] = useState('');
 
   const user = useSelector(state => state.user);
 //   console.log("comment user ",user.user);
   const actualUser = user?.user;
-//   console.log("user id ", actualUser._id);
 
   const [ createComment, { error, isLoading } ] = useCreateCommentMutation();
 
   const handleAddComment = async () => {
-    // console.log(" comment text ",commentText) ;  
-    const commentData = {
+    // console.log(" comment text ",commentText) ; 
+    if(!actualUser) {
+      alert("please login first")
+    }else {
+      const commentData = {
         text:commentText,
         authorId:actualUser._id,
         postId:postId
@@ -28,10 +30,12 @@ function Comment({postId}) {
         console.log("comment response ", response.data);
         if(response?.data.statusCode === 200){
             alert(' comment created successfully ');
+            await refetch();
             setCommentText('');
         }
     } catch (error) {
-        console.log("Error occured while creating comment ", error.message) ;
+      console.log("Error occured while creating comment ", error.message) ;
+    }
     }
   };
 

@@ -14,21 +14,22 @@ function SinglePost() {
     //   console.log("comment user ",user.user);
     const actualUser = user?.user;
     
-    const { data, error, isLoading } = useGetSinglePostQuery(id);
+    const { data, refetch, error, isLoading } = useGetSinglePostQuery(id);
     const singlePost = data?.data.singlePost;
     const comments = data?.data.comments;
     console.log("single data ", data);
+    
     return (
-        <div className='flex justify-center'>
+        <div className='flex md:flex-row justify-center flex-col items-center'>
             <div>
                 {data &&
-                    <div className='w-[50vw] flex flex-col gap-[0.8rem]'>
+                    <div className='md:w-[50vw] w-[90vw] flex flex-col gap-[0.8rem]'>
                         <h1 className="text-3xl md:text-3xl lg:text-2.5xl font-extrabold text-center text-blue-600 mt-6 mb-4 shadow-md decoration-blue-400">{singlePost.title}</h1>
                         <p className='flex gap-[2rem]'>
                             <span>createdAt: {new Date(singlePost.createdAt).toLocaleString()}</span>
                             <span>postedBy: Admin</span>
                         </p>
-                        <img src={singlePost.image} alt="single post" className='h-[60vh] w-[40vw]' />
+                        <img src={singlePost.image} alt="single post" className='h-[60vh] md:w-[40vw] w-[90vw]' />
                         <p className='text-justify'>{singlePost.description}</p>
                     </div>
                 }
@@ -51,8 +52,9 @@ function SinglePost() {
                     }
                     </div>
                 </div>
-                <Comment postId={data && singlePost._id} />
-            </div>{ data &&
+                <Comment postId={data && singlePost._id} refetch={refetch} />
+            </div>
+            { data &&
                 <RecommendPost postId={singlePost._id}/>
             }
         </div>
