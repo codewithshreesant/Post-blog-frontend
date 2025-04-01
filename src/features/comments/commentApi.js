@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const commentApi = createApi({
     reducerPath: 'commentApi',
     baseQuery: fetchBaseQuery({
-        baseUrl:'http://localhost:3000/api/comment',
+        baseUrl:'https://post-blog-backend.onrender.com/api/comment',
         credentials:'include'
     }),
     endpoints: (builder) => ({
