@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const contactApi = createApi({
     reducerPath : 'contactApi',
     baseQuery : fetchBaseQuery({
-        baseUrl:'http://localhost:3000/api/contact',
+        baseUrl:'https://post-blog-backend.onrender.com/api/contact',
        
     }),
     endpoints : (builder) => ({
